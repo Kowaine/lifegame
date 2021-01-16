@@ -1,0 +1,47 @@
+<!--
+ * @Author: Kowaine
+ * @Description: Lifegame
+ * @Date: 2021-01-16 01:10:34
+ * @LastEditTime: 2021-01-16 09:12:25
+-->
+<!DOCTYPE html>
+<html lang='zh-CN'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <title>生命游戏</title>
+    <script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js"></script>
+    <script src="./js/lifegame_v2.js"></script>
+    <link rel="stylesheet" href="./css/lifegame.css">
+</head>
+<body>
+    <div>
+        <!-- <h3>点击开始后需要等待一段较长的时间，根据机器性能不排除卡死的可能性</h3> -->
+        <input id="init_per" type="number" placeholder="初始存活率(默认37.5)">%
+        <button id="start">开始</button>
+        <button id="stop">停止</button>
+        <div id="game-board"></div>
+    </div>
+
+<script>
+    $("#start").off("click").on("click", function() {
+        // 防止重复点击
+        $("#start").attr("disabled", "disabled");
+        $("#game-board").empty();
+        init_per = $("#init_per").val();
+        if(init_per=="") {
+            init_per = undefined;
+        }
+        game = new Lifegame("#game-board", init_per, 3, 100000);
+        let timer = setInterval("game.run_once()", 0);
+        
+        $("#stop").off("click").on("click", function() {
+            clearInterval(timer);
+            game = null;
+            $("#start").removeAttr("disabled");
+        });
+    });
+</script>
+</body>
+</html>
+
