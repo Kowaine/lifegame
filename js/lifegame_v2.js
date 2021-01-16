@@ -2,7 +2,7 @@
  * @Author: Kowaine
  * @Description: 尝试使用H5 Canvas来提升性能
  * @Date: 2021-01-16 07:40:37
- * @LastEditTime: 2021-01-16 10:12:09
+ * @LastEditTime: 2021-01-16 10:39:18
  */
 
 
@@ -193,6 +193,10 @@ class Lifegame {
     run_once() {
         this.__judge();
         this.__updateStatus();
+        // 基本静止则重置
+        if(this.__updatedIndex.length < 0.33 * this.__liveCount) {
+            this.__init_board();
+        }
     }
 }
 
