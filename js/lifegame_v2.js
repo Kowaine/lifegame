@@ -2,24 +2,9 @@
  * @Author: Kowaine
  * @Description: 尝试使用H5 Canvas来提升性能
  * @Date: 2021-01-16 07:40:37
- * @LastEditTime: 2021-01-16 09:26:16
+ * @LastEditTime: 2021-01-16 09:33:40
  */
 
-/**
-  * 判断某个对象是否在数组内(解决二维数组无法判断的问题)
-  * @param {object} obj 
-  * @param {Array} arr 
-  */
- function objInArray(obj, arr) {
-    let result = false;
-    for(index in arr) {
-        if(arr[index].toString() == obj.toString()) {
-            result = true;
-            break;
-        }
-    }
-    return result;
-}
 
 class Lifegame {
     /**
@@ -53,12 +38,11 @@ class Lifegame {
         this.__xCount = xCount;
         this.__yCount = yCount;
 
-        
+        // 画布
         let lifegameCanvas = $("<canvas>");
         lifegameCanvas.attr("id", "lifegame-canvas");
         lifegameCanvas.attr("width", this.__xCount * this.__cellSize + "px");
         lifegameCanvas.attr("height", this.__yCount * this.__cellSize + "px"); 
-        // console.log(lifegameCanvas);
         this.__container.append(lifegameCanvas)
 
         console.log(containerWidth, this.__minCount, xCount, yCount)
@@ -66,20 +50,7 @@ class Lifegame {
         // 决定初始生存细胞
         let liveCount = 0;
         let maxLiveCount = Math.ceil(this.__xCount * this.__yCount * this.__initPer * 0.01);
-        // let liveIndex = new Array();
-        // do {
-        //     let i = Math.round(Math.random() * this.__yCount + 1);
-        //     let j = Math.round(Math.random() * this.__xCount + 1);
-        //     if(objInArray([i, j], liveIndex)) {
-        //         continue;
-        //     }
-        //     else {
-        //         liveIndex.push([i, j]);
-        //         liveCount++;
-        //     }
-        // }while(liveCount<maxLiveCount);
-        // console.log(liveIndex.length);
-        // console.log(this.__initPer, maxLiveCount)
+
 
         // 绘图，初始化状态
         let canvas = $("#lifegame-canvas").get(0);

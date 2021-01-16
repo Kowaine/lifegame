@@ -2,7 +2,7 @@
  * @Author: Kowaine
  * @Description: Lifegame
  * @Date: 2021-01-16 01:10:34
- * @LastEditTime: 2021-01-16 09:12:25
+ * @LastEditTime: 2021-01-16 09:38:37
 -->
 <!DOCTYPE html>
 <html lang='zh-CN'>
@@ -28,13 +28,18 @@
         // 防止重复点击
         $("#start").attr("disabled", "disabled");
         $("#game-board").empty();
+
+        // 读取输入
         init_per = $("#init_per").val();
         if(init_per=="") {
             init_per = undefined;
         }
+
+        // run 
         game = new Lifegame("#game-board", init_per, 3, 100000);
         let timer = setInterval("game.run_once()", 0);
         
+        // 暂停按钮
         $("#stop").off("click").on("click", function() {
             clearInterval(timer);
             game = null;
