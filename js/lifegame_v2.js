@@ -2,7 +2,7 @@
  * @Author: Kowaine
  * @Description: 尝试使用H5 Canvas来提升性能
  * @Date: 2021-01-16 07:40:37
- * @LastEditTime: 2021-01-16 09:33:40
+ * @LastEditTime: 2021-01-16 09:50:37
  */
 
 
@@ -101,6 +101,8 @@ class Lifegame {
         // console.log("judeg");
         let newStatus = new Array();
         $.extend(true, newStatus, this.__cellsStatus);
+
+        // 用以统计哪些细胞需要更新，降低每轮更新的绘图压力
         this.__updatedIndex = new Array();
 
         for(let i = 1; i < this.__yCount + 1; ++i) {
@@ -116,11 +118,9 @@ class Lifegame {
                 if(this.__cellsStatus[i+1][j]) liveCount++;
                 if(this.__cellsStatus[i+1][j+1]) liveCount++;
 
-                // 重新计算生死
-                // console.log(this.__cellsStatus[i][j], newStatus[i][j]);
-                if(liveCount == 3) {
+                // 重新计算生死，同时记录下发生变化的细胞坐标
+                if(liveCount == 3 ) {
                     newStatus[i][j] = true;
-                    // console.log(this.__cellsStatus[i][j], newStatus[i][j]);
                     if(newStatus[i][j] != this.__cellsStatus[i][j]) {
                         this.__updatedIndex.push([i, j]);
                     }
@@ -143,13 +143,14 @@ class Lifegame {
     }
 
     /**
-     * 将状态更新到html元素上
+     * 将状态更新到画布上
      */
     __updateStatus() {
-        // console.log("update", this.__updatedIndex.length);
         for(let index in this.__updatedIndex) {
             let i = this.__updatedIndex[index][0];
             let j = this.__updatedIndex[index][1];
+
+            // 更新
             if(this.__cellsStatus[i][j]) {
                 this.__ctx.fillStyle = "gray";
                 let rect = [
@@ -177,7 +178,6 @@ class Lifegame {
      * 执行
      */
     run_once() {
-        // console.log("run");
         this.__judge();
         this.__updateStatus();
     }
