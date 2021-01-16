@@ -2,7 +2,7 @@
  * @Author: Kowaine
  * @Description: 尝试使用H5 Canvas来提升性能
  * @Date: 2021-01-16 07:40:37
- * @LastEditTime: 2021-01-16 09:50:37
+ * @LastEditTime: 2021-01-16 10:12:09
  */
 
 
@@ -37,6 +37,13 @@ class Lifegame {
         let yCount = Math.ceil(this.__minCount / xCount);
         this.__xCount = xCount;
         this.__yCount = yCount;
+        this.__cellCount = this.__xCount * this.__yCount;
+
+        // 计分板
+        let counter = $("<div>");
+        counter.attr("id", "counter");
+        counter.text("总数: " + this.__cellCount + "\t当前存活数: 0");
+        this.__container.append(counter);
 
         // 画布
         let lifegameCanvas = $("<canvas>");
@@ -56,6 +63,7 @@ class Lifegame {
         let canvas = $("#lifegame-canvas").get(0);
         this.__ctx = canvas.getContext("2d");
         this.__updatedIndex = new Array();
+        this.__liveCount = 0;
         for(let i = 0; i < yCount + 2; ++i) {
             let lineStatus = new Array();
             for(let j = 0; j < xCount + 2; ++j) {
@@ -69,6 +77,7 @@ class Lifegame {
                         if(liveCount > 0.01 * this.__initPer * (i-1)*this.__yCount + j) {
                             if(Math.round(Math.random()*10) < 7) {
                                 liveCount++;
+                                this.__liveCount++;
                                 lineStatus.push(true);
                             }
                             else {
@@ -77,6 +86,7 @@ class Lifegame {
                         }
                         else {
                             liveCount++;
+                            this.__liveCount++;
                             lineStatus.push(true);
                         }
                     }
@@ -122,6 +132,7 @@ class Lifegame {
                 if(liveCount == 3 ) {
                     newStatus[i][j] = true;
                     if(newStatus[i][j] != this.__cellsStatus[i][j]) {
+                        this.__liveCount++;
                         this.__updatedIndex.push([i, j]);
                     }
                 }
@@ -132,6 +143,7 @@ class Lifegame {
                 else {
                     newStatus[i][j] = false;
                     if(newStatus[i][j] != this.__cellsStatus[i][j]) {
+                        this.__liveCount--;
                         this.__updatedIndex.push([i, j])
                     }
                 }
@@ -172,6 +184,7 @@ class Lifegame {
                 this.__ctx.fillRect(...rect);
             }
         }
+        $("#counter").text("总数: " + this.__cellCount + "\t当前存活数: " + this.__liveCount);
     }
 
     /**
